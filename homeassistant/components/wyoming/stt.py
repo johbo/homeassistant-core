@@ -126,6 +126,8 @@ class WyomingSttProvider(stt.SpeechToTextEntity):
                         text = transcript.text
                         break
 
+        except TimeoutError:
+            raise
         except (OSError, WyomingError):
             _LOGGER.exception("Error processing audio stream")
             return stt.SpeechResult(None, stt.SpeechResultState.ERROR)
