@@ -42,6 +42,8 @@ def make_protocol(
 ) -> VoipDatagramProtocol:
     """Plays a pre-recorded message if pipeline is misconfigured."""
     voip_device = devices.async_get_or_create(call_info)
+    # Workaround to ensure that the correct RTP port of the caller is used.
+    voip_device.protocol.addr = (call_info.caller_ip, call_info.caller_rtp_port)
 
     pipeline_id = pipeline_select.get_chosen_pipeline(hass, DOMAIN, voip_device.voip_id)
     try:
